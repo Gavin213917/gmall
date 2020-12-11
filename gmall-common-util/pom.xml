@@ -47,6 +47,7 @@
             <artifactId>commons-codec</artifactId>
         </dependency>
 
+        <!--集成dubbo-->
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>dubbo</artifactId>
