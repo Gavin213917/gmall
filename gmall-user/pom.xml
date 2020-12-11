@@ -6,6 +6,8 @@
     <groupId>com.liskov.gmall</groupId>
     <artifactId>gmall-user</artifactId>
     <version>1.0</version>
+    <packaging>jar</packaging>
+
     <name>gmall-user</name>
     <description>Demo project for Spring Boot</description>
 
