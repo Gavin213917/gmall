@@ -7,8 +7,7 @@ import com.liskov.gmall.user.mapper.UserInfoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
-
-@Service //此处的service 为dubbo 的注解
+@Service
 public class UserServiceImpl implements UserService {
 
     @Autowired

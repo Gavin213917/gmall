@@ -1,6 +1,7 @@
 package com.liskov.gmall.bean;
 
-import com.gavin.gmall.bean.enums.PaymentWay;
+
+import com.liskov.gmall.bean.enums.PaymentWay;
 
 import javax.persistence.*;
 import java.io.Serializable;
