@@ -1,0 +1,15 @@
+.idea/
+*.iml
+gmall-user/mvnw
+gmall-user/mvnw.cmd
+gmall-user/.gitignore
+gmall-user/.mvn/
+gmall-api/target/
+gmall-manage-service/.gitignore
+gmall-manage-service/mvnw
+gmall-manage-service/mvnw.cmd
+gmall-manage-service/.mvn/
+gmall-manage-web/.gitignore
+gmall-manage-web/mvnw
+gmall-manage-web/mvnw.cmd
+gmall-manage-web/.mvn/
