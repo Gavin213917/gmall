@@ -2,11 +2,11 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>添加属性</title>
 </head>
 <body>
 
-    <div id="dlg" class="easyui-dialog" title="编辑属性" style="width:600px;height:500px;"
+    <div id="dlg" class="easyui-dialog" title="添加属性" style="width:600px;height:500px;"
          closed="true"  data-options="iconCls:'icon-save',resizable:true,modal:true,buttons:'#bb'" >
             <label>属性名称:</label>
             <input  id="attrName" name="attrName" class="easyui-textbox" data-options="" style="width:100px"/>
@@ -21,7 +21,7 @@
 
 
 <SCRIPT language="JavaScript">
-    
+    //保存属性
     function saveAttr() {
         var catalog3Id = $("#ctg3ForAttrList").combobox("getValue");
         var attrName = $("#attrName").val();
@@ -42,8 +42,9 @@
             $("#dg").datagrid("reload","getAttrList?catalog3Id="+catalog3Id);
         });
     }
-    
+    //初始化属性值列表
     function initAttrValueDatagrid(attrInfo) {
+     //$('#dg_av').datagrid('loadData', { total: 0, rows: [] });
      d = $('#dg_av').datagrid({
             columns:[[
                 {field:'id',title:'编号',width:100},
@@ -90,6 +91,7 @@
              // 给attrName赋值
              $("#attrName").textbox("setText",attrInfo.attrName);
              // 给属性值列表赋值
+
          }
     }
 </SCRIPT>
