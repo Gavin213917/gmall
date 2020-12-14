@@ -28,12 +28,14 @@
         var attrInfo = {};
         attrInfo["attrName"] = attrName;//{"attrName":attrName}
         attrInfo["catalog3Id"] = catalog3Id;
-
+        //获取所有行
         var rows = $("#dg_av").datagrid("getRows");
+        //遍历拿取 属性值的名称
         $(rows).each(function(i,json){
             attrInfo["attrValueList["+i+"].valueName"]=json.valueName;
         });
 
+        //可用post或者get
         $.get("saveAttr",attrInfo,function(data){
             alert(data);
             // 关闭窗口
@@ -88,9 +90,12 @@
 
 
          if(attrInfo){
+             alert(JSON.stringify(attrInfo));
              // 给attrName赋值
              $("#attrName").textbox("setText",attrInfo.attrName);
              // 给属性值列表赋值
+             var attrId = attrInfo.id;
+             d.datagrid("reload","getAttrValue?id="+attrId);
 
          }
     }
