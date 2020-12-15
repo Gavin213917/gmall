@@ -42,10 +42,7 @@
     //加载属性列表
     function reloadAttrList() {
        var ctg3Id =  $("#ctg3ForAttrList").combobox("getValue");
-
-       $("#dg").datagrid({
-           url:"getAttrList?catalog3Id="+ctg3Id
-       });
+       $("#dg").datagrid({url:"getAttrList?catalog3Id="+ctg3Id});
     }
 
     //编辑属性
@@ -53,10 +50,13 @@
         if(!checkBeforeDialog()){
             return ;
         }
-        // 初始化
-        var attrInfo = $("#dg").datagrid("getSelected");
-        initAttrValueDatagrid(attrInfo);
-        // 打开属性添加的对话框
+        //进页面前先加载数据
+        var attrInfoRow=$("#dg").datagrid('getSelected');
+        $('#dg_av').datagrid({url:'getAttrValueList?id='+attrInfoRow.id});
+        $("#attrId").val(attrInfoRow.id);
+        $("#attrName").textbox('setValue',attrInfoRow.attrName);
+        initAttrValueDatagrid();
+        // 打开属性添加的对话框i
         $("#dlg").dialog("open");
     }
 
@@ -66,6 +66,7 @@
             return ;
         }
         //进系统前先清空
+        $("#attrId").val("");
         $("#attrName").textbox('clear');
         $('#dg_av').datagrid({url:''});
         // 初始化

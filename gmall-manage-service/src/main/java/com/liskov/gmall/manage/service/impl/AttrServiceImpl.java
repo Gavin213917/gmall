@@ -49,9 +49,9 @@ public class AttrServiceImpl implements AttrService {
             baseAttrInfoMapper.updateByPrimaryKey(baseAttrInfo);
         }else{
             //防止主键被赋上一个空字符串
-            if(baseAttrInfo.getId().length()==0){
-                baseAttrInfo.setId(null);
-            }
+//            if(baseAttrInfo.getId().length()==0){
+//                baseAttrInfo.setId(null);
+//            }
             baseAttrInfoMapper.insertSelective(baseAttrInfo);
         }
         //把原属性值全部清空

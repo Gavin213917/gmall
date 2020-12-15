@@ -37,10 +37,12 @@ public class AttrController {
 
     }
 
-    @RequestMapping("getAttrValue")
+    @RequestMapping("getAttrValueList")
     @ResponseBody
-    public List<BaseAttrValue> getAttrInfo(@RequestParam("id") String attrId){
+    public List<BaseAttrValue> getAttrValueList(@RequestParam("id") String attrId){
+        //通过属性id 获取属性信息
         BaseAttrInfo attrInfo = attrService.getAttrInfo(attrId);
+        //返回属性值信息
         return attrInfo.getAttrValueList();
     }
 }
