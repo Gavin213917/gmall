@@ -7,6 +7,7 @@ import com.liskov.gmall.bean.BaseAttrValue;
 import com.liskov.gmall.manage.mapper.BaseAttrInfoMapper;
 import com.liskov.gmall.manage.mapper.BaseAttrValueMapper;
 import com.liskov.gmall.service.AttrService;
+import com.liskov.gmall.utils.ConstantUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -20,15 +21,24 @@ public class AttrServiceImpl implements AttrService {
     @Autowired
     BaseAttrValueMapper baseAttrValueMapper;
 
+    /**
+     * 属性表list
+     * @param catalog3Id
+     * @return
+     */
     @Override
     public List<BaseAttrInfo> getAttrList(String catalog3Id) {
-
         BaseAttrInfo baseAttrInfo = new BaseAttrInfo();
         baseAttrInfo.setCatalog3Id(catalog3Id);
+        baseAttrInfo.setIsEnabled(ConstantUtils.ISENABLED_QY);
         List<BaseAttrInfo> select = baseAttrInfoMapper.select(baseAttrInfo);
         return select;
     }
 
+    /**
+     * 保存或修改属性
+     * @param baseAttrInfo
+     */
     @Override
     public void saveAttr(BaseAttrInfo baseAttrInfo) {
 //        //BaseAttrInfo 属性表  BaseAttrValue 属性值表
@@ -46,6 +56,7 @@ public class AttrServiceImpl implements AttrService {
 
         //如果有主键就进行更新，如果没有就插入
         if(baseAttrInfo.getId()!=null&&baseAttrInfo.getId().length()>0){
+            baseAttrInfo.setIsEnabled(ConstantUtils.ISENABLED_QY);
             baseAttrInfoMapper.updateByPrimaryKey(baseAttrInfo);
         }else{
             //防止主键被赋上一个空字符串
@@ -58,7 +69,6 @@ public class AttrServiceImpl implements AttrService {
         BaseAttrValue baseAttrValue4Del = new BaseAttrValue();
         baseAttrValue4Del.setAttrId(baseAttrInfo.getId());
         baseAttrValueMapper.delete(baseAttrValue4Del);
-
         //重新插入属性
         if(baseAttrInfo.getAttrValueList()!=null&&baseAttrInfo.getAttrValueList().size()>0) {
             for (BaseAttrValue attrValue : baseAttrInfo.getAttrValueList()) {
@@ -70,19 +80,23 @@ public class AttrServiceImpl implements AttrService {
                 baseAttrValueMapper.insertSelective(attrValue);
             }
         }
-
     }
 
+    /**
+     * 获取属性值信息
+     * @param attrId
+     * @return
+     */
     @Override
     public BaseAttrInfo getAttrInfo(String attrId) {
         //查询属性基本信息
         BaseAttrInfo baseAttrInfo = baseAttrInfoMapper.selectByPrimaryKey(attrId);
-
         //查询属性对应的属性值
-        BaseAttrValue  baseAttrValue4Query =new BaseAttrValue();
-        baseAttrValue4Query.setAttrId(baseAttrInfo.getId());
-        List<BaseAttrValue> baseAttrValueList = baseAttrValueMapper.select(baseAttrValue4Query);
-
+        BaseAttrValue  baseAttrValue =new BaseAttrValue();
+        baseAttrValue.setAttrId(baseAttrInfo.getId());
+        baseAttrValue.setIsEnabled(ConstantUtils.ISENABLED_QY);
+        List<BaseAttrValue> baseAttrValueList = baseAttrValueMapper.select(baseAttrValue);
+        //将属性值信息放入属性表中，并返回属性信息
         baseAttrInfo.setAttrValueList(baseAttrValueList);
         return baseAttrInfo;
     }

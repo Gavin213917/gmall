@@ -20,6 +20,11 @@ public class SpuServiceImpl implements SpuService {
     @Autowired
     BaseSaleAttrMapper baseSaleAttrMapper;
 
+    /**
+     * 商品信息list
+     * @param catalog3Id
+     * @return
+     */
     @Override
     public List<SpuInfo> spuList(String catalog3Id) {
         SpuInfo spuInfo = new SpuInfo();
@@ -28,8 +33,22 @@ public class SpuServiceImpl implements SpuService {
         return select;
     }
 
+    /**
+     * 基本销售属性表-字典表
+     * @return
+     */
     @Override
     public List<BaseSaleAttr> baseSaleAttrList() {
         return baseSaleAttrMapper.selectAll();
+    }
+
+    /**
+     * 保存商品信息
+     * @param spuInfo
+     * @return
+     */
+    @Override
+    public void saveSpu(SpuInfo spuInfo) {
+
     }
 }

@@ -95,15 +95,14 @@
 
 
         }
-    
+        //初始化dialog
         function initSpuInfoDlg() {
             // 初始化图片列表
             initSpuImgListDatagrid();
             // 初始化销售属性
             initSpuSaleAttrListDatagrid();
         }
-        
-        
+        // 初始化图片列表
         function initSpuImgListDatagrid() {
 
             $("#spuImgDg").datagrid({
@@ -117,7 +116,7 @@
             });
 
         }
-        
+        // 初始化销售属性
         function initSpuSaleAttrListDatagrid() {
             $("#spuSaleAttrDg").datagrid({
                 columns:[[

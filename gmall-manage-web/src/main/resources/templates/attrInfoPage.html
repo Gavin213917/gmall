@@ -25,7 +25,7 @@
 
     <div id="bb">
         <a href="#" class="easyui-linkbutton" onclick="saveAttr()">保存</a>
-        <a href="#" class="easyui-linkbutton" onclick="closeDialog">关闭</a>
+        <a href="#" class="easyui-linkbutton" onclick="closeDialog()">关闭</a>
     </div>
 
 
@@ -62,7 +62,10 @@
         }
 
         attrJson["attrName"]=$("#attrName").val();
-        attrJson["id"]=$("#attrId").val();
+        var attrId = $("#attrId").val();
+        if(attrId != null && attrId != ''){
+            attrJson["id"]= attrId;
+        }
         attrJson["catalog3Id"]=$("#ctg3ForAttrList").combobox('getValue');
 
         //ajax 保存到后台

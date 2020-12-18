@@ -35,40 +35,40 @@
         <a href="#" class="easyui-linkbutton" onclick="saveSpuSaleAttr()">确 定</a>
         <a href="#" class="easyui-linkbutton" onclick="closeSpuSaleAttr()">关 闭</a>
     </div>
-    
-    <script language="JavaScript">
-        function saveSpuSaleAttr() {
-            // 获得销售属性值列表的数据(json)
-            var data = $("#spuSaleAttrValueDg").datagrid("getData");
-            console.log(JSON.stringify(data));
-            // 保存spu对话框的销售属性的暂存区
-            var saleAttrId = $("#saleAttrSelect").combobox("getValue");
-            var saleAttrName = $("#saleAttrSelect").combobox("getText");
-            $("#spuSaleAttrDg").datagrid("appendRow",{
-                saleAttrId:saleAttrId,saleAttrName:saleAttrName,spuSaleAttrValueJson:data
-            });
+</div>
+<script language="JavaScript">
+    function saveSpuSaleAttr() {
+        // 获得销售属性值列表的数据(json)
+        var data = $("#spuSaleAttrValueDg").datagrid("getData");
+        console.log(JSON.stringify(data));
+        // 保存spu对话框的销售属性的暂存区
+        var saleAttrId = $("#saleAttrSelect").combobox("getValue");
+        var saleAttrName = $("#saleAttrSelect").combobox("getText");
+        $("#spuSaleAttrDg").datagrid("appendRow",{
+            saleAttrId:saleAttrId,saleAttrName:saleAttrName,spuSaleAttrValueJson:data
+        });
 
-            // 关闭spu销售属性对话框
-            $("#spuSaleAttr_dlg").dialog("close");
-        }
-        
-        function initSpuSaleAttrDlg() {
-            // 初始化销售属性的combobox
+        // 关闭spu销售属性对话框
+        $("#spuSaleAttr_dlg").dialog("close");
+    }
 
-            initSpuSaleAttrValueListDatagrid();
-        }
-        
-        function initSpuSaleAttrValueListDatagrid() {
-            d=$("#spuSaleAttrValueDg").datagrid({
-                columns:[[
-                    {field:'id',title:'id',width:100},
-                    {field:'saleAttrValueName',title:'销售属性值名称',width:100,
-                        editor:{
-                            type: 'validatebox', options: { required: true}
-                        }
+    function initSpuSaleAttrDlg() {
+        // 初始化销售属性的combobox
+
+        initSpuSaleAttrValueListDatagrid();
+    }
+
+    function initSpuSaleAttrValueListDatagrid() {
+        d=$("#spuSaleAttrValueDg").datagrid({
+            columns:[[
+                {field:'id',title:'id',width:100},
+                {field:'saleAttrValueName',title:'销售属性值名称',width:100,
+                    editor:{
+                        type: 'validatebox', options: { required: true}
                     }
-                ]],
-                onDblClickRow: function (rowIndex, rowData) {
+                }
+            ]],
+            onDblClickRow: function (rowIndex, rowData) {
                 //双击开启编辑行
                 d.datagrid("beginEdit", rowIndex);
                 //设定当失去焦点时,退出编辑状态
@@ -77,25 +77,24 @@
                     d.datagrid('endEdit',rowIndex);
                 });
             }
-            });
-        }
-        
-        function addSpuSaleAttrValue() {
-            $("#spuSaleAttrValueDg").datagrid("appendRow",{
-                id:"",
-                saleAttrValueName:"默认销售属性值"
-            });
-        }
-        
-        function removeSpuSaleAttrValue() {
-            // 获取被选中的行
-            var row = $("#spuSaleAttrValueDg").datagrid("getSelected");
-            // 获取行号
-            var index = $("#spuSaleAttrValueDg").datagrid("getRowIndex",row);
-            // 根据行号删除
-            $("#spuSaleAttrValueDg").datagrid("deleteRow",index);
-        }
-    </script>
-</div>
+        });
+    }
+
+    function addSpuSaleAttrValue() {
+        $("#spuSaleAttrValueDg").datagrid("appendRow",{
+            id:"",
+            saleAttrValueName:"默认销售属性值"
+        });
+    }
+
+    function removeSpuSaleAttrValue() {
+        // 获取被选中的行
+        var row = $("#spuSaleAttrValueDg").datagrid("getSelected");
+        // 获取行号
+        var index = $("#spuSaleAttrValueDg").datagrid("getRowIndex",row);
+        // 根据行号删除
+        $("#spuSaleAttrValueDg").datagrid("deleteRow",index);
+    }
+</script>
 </body>
 </html>

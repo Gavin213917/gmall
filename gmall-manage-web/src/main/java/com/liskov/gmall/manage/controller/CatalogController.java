@@ -19,6 +19,10 @@ public class CatalogController {
     @Reference
     CatalogService cataLogService;
 
+    /**
+     * 获取一级分类信息
+     * @return
+     */
     @RequestMapping("getCatalog1")
     @ResponseBody
     public List<BaseCatalog1> getCatalog1(){
@@ -26,6 +30,10 @@ public class CatalogController {
         return baseCatalog1s;
     }
 
+    /**
+     * 获取二级分类信息
+     * @return
+     */
     @RequestMapping("getCatalog2")
     @ResponseBody
     public List<BaseCatalog2> getCatalog2(String catalog1Id){
@@ -33,6 +41,10 @@ public class CatalogController {
         return baseCatalog2s;
     }
 
+    /**
+     * 获取三级分类信息
+     * @return
+     */
     @RequestMapping("getCatalog3")
     @ResponseBody
     public List<BaseCatalog3> getCatalog3(String catalog2Id){

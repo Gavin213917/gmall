@@ -41,12 +41,20 @@
 <SCRIPT language="JavaScript">
     //加载属性列表
     function reloadAttrList() {
+        if(!checkBeforeDialog()){
+            return ;
+        }
        var ctg3Id =  $("#ctg3ForAttrList").combobox("getValue");
        $("#dg").datagrid({url:"getAttrList?catalog3Id="+ctg3Id});
     }
 
     //编辑属性
     function editAttrInfo() {
+        // 打开属性添加的对话框i
+        $("#dlg").dialog("open");
+        //清空行信息
+        $('#dg_av').datagrid({url:''});
+        $('#dg_av').datagrid('loadData', { total: 0, rows: [] });
         if(!checkBeforeDialog()){
             return ;
         }
@@ -56,8 +64,6 @@
         $("#attrId").val(attrInfoRow.id);
         $("#attrName").textbox('setValue',attrInfoRow.attrName);
         initAttrValueDatagrid();
-        // 打开属性添加的对话框i
-        $("#dlg").dialog("open");
     }
 
     //新增属性
@@ -65,14 +71,16 @@
         if(!checkBeforeDialog()){
             return ;
         }
+        // 打开属性添加的对话框
+        $("#dlg").dialog("open");
+        //清空列表
+        $('#dg_av').datagrid({url:''});
+        $('#dg_av').datagrid('loadData', { total: 0, rows: [] });
         //进系统前先清空
         $("#attrId").val("");
         $("#attrName").textbox('clear');
-        $('#dg_av').datagrid({url:''});
         // 初始化
         initAttrValueDatagrid();
-        // 打开属性添加的对话框
-        $("#dlg").dialog("open");
     }
 
     //校验页面的三级分类id有没有选择

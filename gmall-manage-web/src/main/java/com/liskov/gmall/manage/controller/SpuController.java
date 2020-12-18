@@ -16,14 +16,24 @@ public class SpuController {
     @Reference
     SpuService spuService;
 
-    @RequestMapping("saveSpu")
+    /**
+     * 商品信息list
+     * @param catalog3Id
+     * @return
+     */
+    @RequestMapping("spuList")
     @ResponseBody
-    public String saveSpu(SpuInfo spuInfo){
+    public List<SpuInfo> spuList(String catalog3Id){
 
-        return "success";
+        List<SpuInfo> spuInfos = spuService.spuList(catalog3Id);
+        return spuInfos;
 
     }
 
+    /**
+     * 基本销售属性表-字典表
+     * @return
+     */
     @RequestMapping("baseSaleAttrList")
     @ResponseBody
     public List<BaseSaleAttr> baseSaleAttrList(){
@@ -33,13 +43,16 @@ public class SpuController {
 
     }
 
-
-    @RequestMapping("spuList")
+    /**
+     * 保存商品信息
+     * @param spuInfo
+     * @return
+     */
+    @RequestMapping("saveSpu")
     @ResponseBody
-    public List<SpuInfo> spuList(String catalog3Id){
-
-        List<SpuInfo> spuInfos = spuService.spuList(catalog3Id);
-        return spuInfos;
+    public String saveSpu(SpuInfo spuInfo){
+        spuService.saveSpu(spuInfo);
+        return "success";
 
     }
 

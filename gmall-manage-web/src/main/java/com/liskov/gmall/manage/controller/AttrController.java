@@ -17,26 +17,34 @@ public class AttrController {
     @Reference
     AttrService attrService;
 
+    /**
+     * 属性表list
+     * @param catalog3Id
+     * @return
+     */
+    @RequestMapping("getAttrList")
+    @ResponseBody
+    public List<BaseAttrInfo> getAttrList(String catalog3Id){
+        List<BaseAttrInfo> baseAttrInfos = attrService.getAttrList(catalog3Id);
+        return baseAttrInfos;
+    }
 
+    /**
+     * 保存或修改属性
+     * @param baseAttrInfo
+     */
     @RequestMapping("saveAttr")
     @ResponseBody
     public String saveAttr(BaseAttrInfo baseAttrInfo){
         attrService.saveAttr(baseAttrInfo);
-
         return "success";
-
     }
 
-    @RequestMapping("getAttrList")
-    @ResponseBody
-    public List<BaseAttrInfo> getAttrList(String catalog3Id){
-
-        List<BaseAttrInfo> baseAttrInfos = attrService.getAttrList(catalog3Id);
-
-        return baseAttrInfos;
-
-    }
-
+    /**
+     * 获取属性值信息
+     * @param attrId
+     * @return
+     */
     @RequestMapping("getAttrValueList")
     @ResponseBody
     public List<BaseAttrValue> getAttrValueList(@RequestParam("id") String attrId){

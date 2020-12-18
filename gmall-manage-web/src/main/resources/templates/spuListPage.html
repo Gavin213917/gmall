@@ -59,20 +59,30 @@
 
 <script language="JavaScript">
     function reloadSpuList() {
-        catalog3Id = $("#ctg3ForSpuList").datagrid("getValue");
-        if(!catalog3Id){
-            catalog3Id = "61";
+        if(!checkBeforeDialog()){
+            return ;
         }
+        catalog3Id = $("#ctg3ForSpuList").datagrid("getValue");
         $('#spulist_dg').datagrid({url:'spuList?catalog3Id='+catalog3Id});
     }
-
+    //添加商品信息
     function addSpuInfo() {
+        if(!checkBeforeDialog()){
+            return ;
+        }
         //打开一个spu添加的对话框
         $("#spu_dlg").dialog("open");
-
         // 初始化对话框
         initSpuInfoDlg();
-
+    }
+    //校验页面的三级分类id有没有选择
+    function checkBeforeDialog(){
+        var catalog3Id = $("#ctg3ForSpuList").combobox('getValue');
+        if(catalog3Id == ''){
+            $.messager.alert('警告','请先选择三级分类','warning');
+            return false;
+        }
+        return true;
     }
 </script>
 </body>
