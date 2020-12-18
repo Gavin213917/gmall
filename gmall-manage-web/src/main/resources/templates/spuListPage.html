@@ -62,7 +62,7 @@
         if(!checkBeforeDialog()){
             return ;
         }
-        catalog3Id = $("#ctg3ForSpuList").datagrid("getValue");
+        var catalog3Id = $("#ctg3ForSpuList").combobox("getValue");
         $('#spulist_dg').datagrid({url:'spuList?catalog3Id='+catalog3Id});
     }
     //添加商品信息

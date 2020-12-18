@@ -3,8 +3,12 @@ package com.liskov.gmall.manage.service.impl;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.liskov.gmall.bean.BaseSaleAttr;
 import com.liskov.gmall.bean.SpuInfo;
+import com.liskov.gmall.bean.SpuSaleAttr;
+import com.liskov.gmall.bean.SpuSaleAttrValue;
 import com.liskov.gmall.manage.mapper.BaseSaleAttrMapper;
 import com.liskov.gmall.manage.mapper.SpuInfoMapper;
+import com.liskov.gmall.manage.mapper.SpuSaleAttrMapper;
+import com.liskov.gmall.manage.mapper.SpuSaleAttrValueMapper;
 import com.liskov.gmall.service.SpuService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -16,7 +20,10 @@ public class SpuServiceImpl implements SpuService {
 
     @Autowired
     SpuInfoMapper spuInfoMapper;
-
+    @Autowired
+    SpuSaleAttrMapper spuSaleAttrMapper;
+    @Autowired
+    SpuSaleAttrValueMapper spuSaleAttrValueMapper;
     @Autowired
     BaseSaleAttrMapper baseSaleAttrMapper;
 
@@ -49,6 +56,20 @@ public class SpuServiceImpl implements SpuService {
      */
     @Override
     public void saveSpu(SpuInfo spuInfo) {
+        //插入后，将主键值（属性id）返回，在实体类上需要配置主键属性
+        spuInfoMapper.insertSelective(spuInfo);
+        //获取前台传过来添加的销售属性值
+        List<SpuSaleAttr> spuSaleAttrList = spuInfo.getSpuSaleAttrList();
+        //循环插入
+        for (SpuSaleAttr spuSaleAttr:spuSaleAttrList) {
+            spuSaleAttr.setSpuId(spuInfo.getId());
+            spuSaleAttrMapper.insert(spuSaleAttr);
 
+            List<SpuSaleAttrValue> saleAttrValueList = spuSaleAttr.getSpuSaleAttrValueList();
+            for(SpuSaleAttrValue spuSaleAttrValue:saleAttrValueList){
+                spuSaleAttrValue.setSpuId(spuInfo.getId());
+                spuSaleAttrValueMapper.insert(spuSaleAttrValue);
+            }
+        }
     }
 }
