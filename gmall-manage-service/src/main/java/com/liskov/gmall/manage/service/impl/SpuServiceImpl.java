@@ -56,15 +56,18 @@ public class SpuServiceImpl implements SpuService {
      */
     @Override
     public void saveSpu(SpuInfo spuInfo) {
-        //插入后，将主键值（属性id）返回，在实体类上需要配置主键属性
+        //保存spuInfo信息，插入后，将主键值（属性id）返回，在实体类上需要配置主键属性
         spuInfoMapper.insertSelective(spuInfo);
+
+        //保存图片信息
+
         //获取前台传过来添加的销售属性值
         List<SpuSaleAttr> spuSaleAttrList = spuInfo.getSpuSaleAttrList();
-        //循环插入
+        //循环插入，保存商品销售属性信息
         for (SpuSaleAttr spuSaleAttr:spuSaleAttrList) {
             spuSaleAttr.setSpuId(spuInfo.getId());
             spuSaleAttrMapper.insert(spuSaleAttr);
-
+            //保存商品销售属性值信息
             List<SpuSaleAttrValue> saleAttrValueList = spuSaleAttr.getSpuSaleAttrValueList();
             for(SpuSaleAttrValue spuSaleAttrValue:saleAttrValueList){
                 spuSaleAttrValue.setSpuId(spuInfo.getId());
