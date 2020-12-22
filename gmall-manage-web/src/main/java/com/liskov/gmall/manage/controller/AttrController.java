@@ -53,4 +53,16 @@ public class AttrController {
         //返回属性值信息
         return attrInfo.getAttrValueList();
     }
+
+    /**
+     * 获取属性列表
+     * @param catalog3Id
+     * @return
+     */
+    @RequestMapping("getAttrListByCtg3Id")
+    @ResponseBody
+    public List<BaseAttrInfo> getAttrListByCtg3Id(String  catalog3Id){
+        List<BaseAttrInfo> baseAttrInfos = attrService.getAttrListByCtg3Id(catalog3Id);
+        return baseAttrInfos;
+    }
 }

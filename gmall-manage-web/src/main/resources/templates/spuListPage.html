@@ -53,11 +53,12 @@
 
 <div th:include="spuInfoPage"></div>
 
-<!--<div th:include="skuInfoPage"></div>
+<div th:include="skuInfoPage"></div>
 
-<div th:include="skuListPage"></div>-->
+<div th:include="skuListPage"></div>
 
 <script language="JavaScript">
+    //刷新列表
     function reloadSpuList() {
         if(!checkBeforeDialog()){
             return ;
@@ -65,6 +66,7 @@
         var catalog3Id = $("#ctg3ForSpuList").combobox("getValue");
         $('#spulist_dg').datagrid({url:'spuList?catalog3Id='+catalog3Id});
     }
+
     //添加商品信息
     function addSpuInfo() {
         if(!checkBeforeDialog()){
@@ -72,9 +74,39 @@
         }
         //打开一个spu添加的对话框
         $("#spu_dlg").dialog("open");
+
+        //清空spuName和description
+        $("#spuName").textbox("setValue",'');
+        $("#description").textbox("setValue",'');
+
+        //清空图片表格和datagrid整合
+        $('#spuImgDg').datagrid('loadData', {total: 0, rows: []});
+        //清空销售属性
+        $("#spuSaleAttrDg").datagrid('loadData', {total: 0, rows: []});
+
         // 初始化对话框
         initSpuInfoDlg();
     }
+
+    //商品单元列表
+    function showSkuInfoList() {
+        // 打开sku对话框
+        $("#skulist_dlg").dialog("open");
+        // spuInfo
+        var spuInfo = $("#spulist_dg").datagrid("getSelected");
+        // 初始化sku数据列表
+        initSkuListDatagrid(spuInfo);
+    }
+
+    //添加商品单元信息
+    function addSkuInfo() {
+        // 打开sku添加的对话框
+        $("#sku_dlg").dialog("open");
+        // 初始化对话框
+        var spuInfo = $("#spulist_dg").datagrid("getSelected");
+        initSkuInfoDlg(spuInfo);
+    }
+
     //校验页面的三级分类id有没有选择
     function checkBeforeDialog(){
         var catalog3Id = $("#ctg3ForSpuList").combobox('getValue');

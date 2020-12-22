@@ -1,14 +1,8 @@
 package com.liskov.gmall.manage.service.impl;
 
 import com.alibaba.dubbo.config.annotation.Service;
-import com.liskov.gmall.bean.BaseSaleAttr;
-import com.liskov.gmall.bean.SpuInfo;
-import com.liskov.gmall.bean.SpuSaleAttr;
-import com.liskov.gmall.bean.SpuSaleAttrValue;
-import com.liskov.gmall.manage.mapper.BaseSaleAttrMapper;
-import com.liskov.gmall.manage.mapper.SpuInfoMapper;
-import com.liskov.gmall.manage.mapper.SpuSaleAttrMapper;
-import com.liskov.gmall.manage.mapper.SpuSaleAttrValueMapper;
+import com.liskov.gmall.bean.*;
+import com.liskov.gmall.manage.mapper.*;
 import com.liskov.gmall.service.SpuService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -20,6 +14,8 @@ public class SpuServiceImpl implements SpuService {
 
     @Autowired
     SpuInfoMapper spuInfoMapper;
+    @Autowired
+    SpuImageMapper spuImageMapper;
     @Autowired
     SpuSaleAttrMapper spuSaleAttrMapper;
     @Autowired
@@ -60,6 +56,11 @@ public class SpuServiceImpl implements SpuService {
         spuInfoMapper.insertSelective(spuInfo);
 
         //保存图片信息
+        List<SpuImage> spuImageList = spuInfo.getSpuImageList();
+        for (SpuImage spuImage : spuImageList) {
+            spuImage.setSpuId(spuInfo.getId());
+            spuImageMapper.insert(spuImage);
+        }
 
         //获取前台传过来添加的销售属性值
         List<SpuSaleAttr> spuSaleAttrList = spuInfo.getSpuSaleAttrList();

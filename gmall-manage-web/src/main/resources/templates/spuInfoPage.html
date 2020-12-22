@@ -27,7 +27,7 @@
             <!----------------图片列表工具栏----------------------->
             <div id="spuImgTootbar" style="padding:5px;height:auto"  >
                 <div style="margin-bottom:5px">
-                    <a href="#" id="spuImgAdd" class="easyui-linkbutton" iconCls="icon-add" plain="true">添加图片</a>
+                    <a href="#" id="spuImgAdd" class="easyui-filebox"  iconCls="icon-add" plain="true">添加图片</a>
                     <a href="#" id="spuImgUploadBtn" class="easyui-linkbutton" iconCls="icon-save" plain="true" >图片上传</a>
                     <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true">删除</a>
                 </div>
@@ -58,7 +58,13 @@
     </div>
 
 <script language="JavaScript">
-        
+        //添加图片按钮
+        $('#spuImgAdd').filebox({
+            buttonText: '添加图片',
+            buttonAlign: 'right',
+            width:80
+        });
+        //保存
         function saveSpu() {
            // 获取spu的json格式的js数据对象
             var spuInfo = {};
@@ -83,7 +89,12 @@
                     spuInfo["spuSaleAttrList["+i+"].spuSaleAttrValueList["+j+"].saleAttrValueName"] = attrValue.saleAttrValueName;
                 })
             });
-
+            //封装图片信息
+            var imgRows = $("#spuImgDg").datagrid("getRows");
+            $(imgRows).each(function (i,img) {
+                spuInfo["spuImageList["+i+"].imgName"] = img.imgName;
+                spuInfo["spuImageList["+i+"].imgUrl"] = img.imgUrl;
+            });
 
             // 异步保存
             $.post("saveSpu",spuInfo,function (data) {
@@ -118,7 +129,7 @@
                 // 文件接收路径
                 server: '/fileUpload',
                 // 选择文件的按钮。
-                pick: '#spuImgAdd',
+                //pick: '#spuImgAdd',
                 // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
                 resize: false,
                 //设定文件大小上限 2M

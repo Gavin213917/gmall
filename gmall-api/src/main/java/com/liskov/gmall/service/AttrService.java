@@ -27,4 +27,11 @@ public interface AttrService {
      * @return
      */
     BaseAttrInfo getAttrInfo(String attrId);
+
+    /**
+     * 获取属性列表
+     * @param catalog3Id
+     * @return
+     */
+    List<BaseAttrInfo> getAttrListByCtg3Id(String catalog3Id);
 }

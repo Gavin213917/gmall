@@ -100,4 +100,27 @@ public class AttrServiceImpl implements AttrService {
         baseAttrInfo.setAttrValueList(baseAttrValueList);
         return baseAttrInfo;
     }
+
+    /**
+     * 获取属性列表
+     * @param catalog3Id
+     * @return
+     */
+    @Override
+    public List<BaseAttrInfo> getAttrListByCtg3Id(String catalog3Id) {
+        BaseAttrInfo baseAttrInfo = new BaseAttrInfo();
+        baseAttrInfo.setCatalog3Id(catalog3Id);
+        List<BaseAttrInfo> select = baseAttrInfoMapper.select(baseAttrInfo);
+
+        for (BaseAttrInfo attrInfo : select) {
+            String attrId = attrInfo.getId();
+
+            BaseAttrValue baseAttrValue = new BaseAttrValue();
+            baseAttrValue.setAttrId(attrId);
+            List<BaseAttrValue> select1 = baseAttrValueMapper.select(baseAttrValue);
+
+            attrInfo.setAttrValueList(select1);
+        }
+        return select;
+    }
 }
