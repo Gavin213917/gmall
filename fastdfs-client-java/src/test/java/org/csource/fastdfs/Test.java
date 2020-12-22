@@ -9,6 +9,7 @@
 package org.csource.fastdfs;
 
 import org.csource.common.NameValuePair;
+import org.csource.fastdfs.*;
 
 /**
  * client test
@@ -45,7 +46,7 @@ public class Test {
       System.out.println("charset=" + ClientGlobal.g_charset);
 
       TrackerClient tracker = new TrackerClient();
-      TrackerServer trackerServer = tracker.getTrackerServer();
+      TrackerServer trackerServer = tracker.getConnection();
       StorageServer storageServer = null;
       StorageClient1 client = new StorageClient1(trackerServer, storageServer);
 
@@ -59,6 +60,8 @@ public class Test {
         byte[] result = client.download_file1(fileId);
         System.out.println(i + ", download result is: " + result.length);
       }
+
+      trackerServer.close();
     } catch (Exception ex) {
       ex.printStackTrace();
     }

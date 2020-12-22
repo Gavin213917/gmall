@@ -3,13 +3,14 @@
  * <p>
  * FastDFS Java Client may be copied only under the terms of the GNU Lesser
  * General Public License (LGPL).
- * Please visit the FastDFS Home Page https://github.com/happyfish100/fastdfs for more detail.
+ * Please visit the FastDFS Home Page http://www.csource.org/ for more detail.
  */
 
 package org.csource.fastdfs;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.net.Socket;
 
 /**
  * Tracker server group
@@ -38,8 +39,12 @@ public class TrackerGroup {
    *
    * @return connected tracker server, null for fail
    */
-  public TrackerServer getTrackerServer(int serverIndex) throws IOException {
-    return new TrackerServer(this.tracker_servers[serverIndex]);
+  public TrackerServer getConnection(int serverIndex) throws IOException {
+    Socket sock = new Socket();
+    sock.setReuseAddress(true);
+    sock.setSoTimeout(ClientGlobal.g_network_timeout);
+    sock.connect(this.tracker_servers[serverIndex], ClientGlobal.g_connect_timeout);
+    return new TrackerServer(sock, this.tracker_servers[serverIndex]);
   }
 
   /**
@@ -47,7 +52,7 @@ public class TrackerGroup {
    *
    * @return connected tracker server, null for fail
    */
-  public TrackerServer getTrackerServer() throws IOException {
+  public TrackerServer getConnection() throws IOException {
     int current_index;
 
     synchronized (this.lock) {
@@ -60,7 +65,7 @@ public class TrackerGroup {
     }
 
     try {
-      return this.getTrackerServer(current_index);
+      return this.getConnection(current_index);
     } catch (IOException ex) {
       System.err.println("connect to server " + this.tracker_servers[current_index].getAddress().getHostAddress() + ":" + this.tracker_servers[current_index].getPort() + " fail");
       ex.printStackTrace(System.err);
@@ -72,7 +77,7 @@ public class TrackerGroup {
       }
 
       try {
-        TrackerServer trackerServer = this.getTrackerServer(i);
+        TrackerServer trackerServer = this.getConnection(i);
 
         synchronized (this.lock) {
           if (this.tracker_server_index == current_index) {

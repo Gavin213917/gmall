@@ -3,7 +3,7 @@
  * <p>
  * FastDFS Java Client may be copied only under the terms of the GNU Lesser
  * General Public License (LGPL).
- * Please visit the FastDFS Home Page https://github.com/happyfish100/fastdfs for more detail.
+ * Please visit the FastDFS Home Page http://www.csource.org/ for more detail.
  */
 
 package org.csource.fastdfs;
@@ -28,7 +28,7 @@ public class StorageServer extends TrackerServer {
    * @param store_path the store path index on the storage server
    */
   public StorageServer(String ip_addr, int port, int store_path) throws IOException {
-    super(new InetSocketAddress(ip_addr, port));
+    super(ClientGlobal.getSocket(ip_addr, port), new InetSocketAddress(ip_addr, port));
     this.store_path_index = store_path;
   }
 
@@ -40,7 +40,7 @@ public class StorageServer extends TrackerServer {
    * @param store_path the store path index on the storage server
    */
   public StorageServer(String ip_addr, int port, byte store_path) throws IOException {
-    super(new InetSocketAddress(ip_addr, port));
+    super(ClientGlobal.getSocket(ip_addr, port), new InetSocketAddress(ip_addr, port));
     if (store_path < 0) {
       this.store_path_index = 256 + store_path;
     } else {

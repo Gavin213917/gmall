@@ -3,7 +3,7 @@
  * <p>
  * FastDFS Java Client may be copied only under the terms of the GNU Lesser
  * General Public License (LGPL).
- * Please visit the FastDFS Home Page https://github.com/happyfish100/fastdfs for more detail.
+ * Please visit the FastDFS Home Page http://www.csource.org/ for more detail.
  **/
 
 package org.csource.fastdfs;
@@ -49,8 +49,6 @@ public class ProtoCommon {
   public static final byte STORAGE_PROTO_CMD_APPEND_FILE = 24;  //append file
   public static final byte STORAGE_PROTO_CMD_MODIFY_FILE = 34;  //modify appender file
   public static final byte STORAGE_PROTO_CMD_TRUNCATE_FILE = 36;  //truncate appender file
-  public static final byte STORAGE_PROTO_CMD_REGENERATE_APPENDER_FILENAME = 38;  //rename appender file to normal file
-
   public static final byte STORAGE_PROTO_CMD_RESP = TRACKER_PROTO_CMD_RESP;
   public static final byte FDFS_STORAGE_STATUS_INIT = 0;
   public static final byte FDFS_STORAGE_STATUS_WAIT_SYNC = 1;

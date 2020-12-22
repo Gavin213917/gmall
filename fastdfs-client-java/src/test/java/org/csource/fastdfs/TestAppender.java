@@ -9,6 +9,7 @@
 package org.csource.fastdfs;
 
 import org.csource.common.NameValuePair;
+import org.csource.fastdfs.*;
 
 import java.io.File;
 import java.net.InetSocketAddress;
@@ -52,7 +53,7 @@ public class TestAppender {
       String remote_filename;
       ServerInfo[] servers;
       TrackerClient tracker = new TrackerClient();
-      TrackerServer trackerServer = tracker.getTrackerServer();
+      TrackerServer trackerServer = tracker.getConnection();
 
       StorageServer storageServer = null;
 
@@ -165,17 +166,6 @@ public class TestAppender {
           System.err.println(client.get_file_info(group_name, appender_filename));
         } else {
           System.err.println("append file fail, error no: " + errno);
-        }
-
-        startTime = System.currentTimeMillis();
-        results  = client.regenerate_appender_filename(group_name, appender_filename);
-        System.out.println("regenerate_appender_filename time used: " + (System.currentTimeMillis() - startTime) + " ms");
-        if (errno == 0) {
-          group_name = results[0];
-          appender_filename = results[1];
-          System.err.println(client.get_file_info(group_name, appender_filename));
-        } else {
-          System.err.println("regenerate_appender_filename fail, error no: " + errno);
         }
 
         startTime = System.currentTimeMillis();
@@ -297,10 +287,14 @@ public class TestAppender {
         return;
       }
   		/* for test only */
-      System.out.println("active test to storage server: " + storageServer.getConnection().activeTest());
+      System.out.println("active test to storage server: " + ProtoCommon.activeTest(storageServer.getSocket()));
+
+      storageServer.close();
 
   		/* for test only */
-      System.out.println("active test to tracker server: " + trackerServer.getConnection().activeTest());
+      System.out.println("active test to tracker server: " + ProtoCommon.activeTest(trackerServer.getSocket()));
+
+      trackerServer.close();
     } catch (Exception ex) {
       ex.printStackTrace();
     }

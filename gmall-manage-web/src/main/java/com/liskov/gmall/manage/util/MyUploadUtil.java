@@ -29,8 +29,8 @@ public class MyUploadUtil {
 
         TrackerServer connection = null;
         try {
-//            connection = trackerClient.getConnection();
-            connection = trackerClient.getTrackerServer();
+            //对应的版本必须为1.27 ，否则此方法会报错
+            connection = trackerClient.getConnection();
         } catch (IOException e) {
             e.printStackTrace();
         }

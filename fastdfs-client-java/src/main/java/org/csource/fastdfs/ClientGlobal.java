@@ -3,7 +3,7 @@
  * <p>
  * FastDFS Java Client may be copied only under the terms of the GNU Lesser
  * General Public License (LGPL).
- * Please visit the FastDFS Home Page https://github.com/happyfish100/fastdfs for more detail.
+ * Please visit the FastDFS Home Page http://www.csource.org/ for more detail.
  **/
 
 package org.csource.fastdfs;
@@ -34,6 +34,7 @@ public class ClientGlobal {
   public static final String CONF_KEY_HTTP_SECRET_KEY = "http.secret_key";
   public static final String CONF_KEY_HTTP_TRACKER_HTTP_PORT = "http.tracker_http_port";
   public static final String CONF_KEY_TRACKER_SERVER = "tracker_server";
+
   public static final String PROP_KEY_CONNECT_TIMEOUT_IN_SECONDS = "fastdfs.connect_timeout_in_seconds";
   public static final String PROP_KEY_NETWORK_TIMEOUT_IN_SECONDS = "fastdfs.network_timeout_in_seconds";
   public static final String PROP_KEY_CHARSET = "fastdfs.charset";
@@ -42,13 +43,6 @@ public class ClientGlobal {
   public static final String PROP_KEY_HTTP_TRACKER_HTTP_PORT = "fastdfs.http_tracker_http_port";
   public static final String PROP_KEY_TRACKER_SERVERS = "fastdfs.tracker_servers";
 
-
-  public static final String PROP_KEY_CONNECTION_POOL_ENABLED = "fastdfs.connection_pool.enabled";
-  public static final String PROP_KEY_CONNECTION_POOL_MAX_COUNT_PER_ENTRY = "fastdfs.connection_pool.max_count_per_entry";
-  public static final String PROP_KEY_CONNECTION_POOL_MAX_IDLE_TIME = "fastdfs.connection_pool.max_idle_time";
-  public static final String PROP_KEY_CONNECTION_POOL_MAX_WAIT_TIME_IN_MS = "fastdfs.connection_pool.max_wait_time_in_ms";
-
-
   public static final int DEFAULT_CONNECT_TIMEOUT = 5; //second
   public static final int DEFAULT_NETWORK_TIMEOUT = 30; //second
   public static final String DEFAULT_CHARSET = "UTF-8";
@@ -56,22 +50,12 @@ public class ClientGlobal {
   public static final String DEFAULT_HTTP_SECRET_KEY = "FastDFS1234567890";
   public static final int DEFAULT_HTTP_TRACKER_HTTP_PORT = 80;
 
-  public static final boolean DEFAULT_CONNECTION_POOL_ENABLED = true;
-  public static final int DEFAULT_CONNECTION_POOL_MAX_COUNT_PER_ENTRY = 100;
-  public static final int DEFAULT_CONNECTION_POOL_MAX_IDLE_TIME = 3600 ;//second
-  public static final int DEFAULT_CONNECTION_POOL_MAX_WAIT_TIME_IN_MS = 1000 ;//millisecond
-
   public static int g_connect_timeout = DEFAULT_CONNECT_TIMEOUT * 1000; //millisecond
   public static int g_network_timeout = DEFAULT_NETWORK_TIMEOUT * 1000; //millisecond
   public static String g_charset = DEFAULT_CHARSET;
   public static boolean g_anti_steal_token = DEFAULT_HTTP_ANTI_STEAL_TOKEN; //if anti-steal token
   public static String g_secret_key = DEFAULT_HTTP_SECRET_KEY; //generage token secret key
   public static int g_tracker_http_port = DEFAULT_HTTP_TRACKER_HTTP_PORT;
-
-  public static boolean g_connection_pool_enabled = DEFAULT_CONNECTION_POOL_ENABLED;
-  public static int g_connection_pool_max_count_per_entry = DEFAULT_CONNECTION_POOL_MAX_COUNT_PER_ENTRY;
-  public static int g_connection_pool_max_idle_time = DEFAULT_CONNECTION_POOL_MAX_IDLE_TIME * 1000; //millisecond
-  public static int g_connection_pool_max_wait_time_in_ms = DEFAULT_CONNECTION_POOL_MAX_WAIT_TIME_IN_MS; //millisecond
 
   public static TrackerGroup g_tracker_group;
 
@@ -128,17 +112,6 @@ public class ClientGlobal {
     if (g_anti_steal_token) {
       g_secret_key = iniReader.getStrValue("http.secret_key");
     }
-    g_connection_pool_enabled = iniReader.getBoolValue("connection_pool.enabled", DEFAULT_CONNECTION_POOL_ENABLED);
-    g_connection_pool_max_count_per_entry = iniReader.getIntValue("connection_pool.max_count_per_entry", DEFAULT_CONNECTION_POOL_MAX_COUNT_PER_ENTRY);
-    g_connection_pool_max_idle_time = iniReader.getIntValue("connection_pool.max_idle_time", DEFAULT_CONNECTION_POOL_MAX_IDLE_TIME);
-    if (g_connection_pool_max_idle_time < 0) {
-      g_connection_pool_max_idle_time = DEFAULT_CONNECTION_POOL_MAX_IDLE_TIME;
-    }
-    g_connection_pool_max_idle_time *= 1000;
-    g_connection_pool_max_wait_time_in_ms = iniReader.getIntValue("connection_pool.max_wait_time_in_ms", DEFAULT_CONNECTION_POOL_MAX_WAIT_TIME_IN_MS);
-    if (g_connection_pool_max_wait_time_in_ms < 0) {
-      g_connection_pool_max_wait_time_in_ms = DEFAULT_CONNECTION_POOL_MAX_WAIT_TIME_IN_MS;
-    }
   }
 
   /**
@@ -176,11 +149,6 @@ public class ClientGlobal {
     String httpAntiStealTokenConf = props.getProperty(PROP_KEY_HTTP_ANTI_STEAL_TOKEN);
     String httpSecretKeyConf = props.getProperty(PROP_KEY_HTTP_SECRET_KEY);
     String httpTrackerHttpPortConf = props.getProperty(PROP_KEY_HTTP_TRACKER_HTTP_PORT);
-    String poolEnabled = props.getProperty(PROP_KEY_CONNECTION_POOL_ENABLED);
-    String poolMaxCountPerEntry = props.getProperty(PROP_KEY_CONNECTION_POOL_MAX_COUNT_PER_ENTRY);
-    String poolMaxIdleTime  = props.getProperty(PROP_KEY_CONNECTION_POOL_MAX_IDLE_TIME);
-    String poolMaxWaitTimeInMS = props.getProperty(PROP_KEY_CONNECTION_POOL_MAX_WAIT_TIME_IN_MS);
-
     if (connectTimeoutInSecondsConf != null && connectTimeoutInSecondsConf.trim().length() != 0) {
       g_connect_timeout = Integer.parseInt(connectTimeoutInSecondsConf.trim()) * 1000;
     }
@@ -198,18 +166,6 @@ public class ClientGlobal {
     }
     if (httpTrackerHttpPortConf != null && httpTrackerHttpPortConf.trim().length() != 0) {
       g_tracker_http_port = Integer.parseInt(httpTrackerHttpPortConf);
-    }
-    if (poolEnabled != null && poolEnabled.trim().length() != 0) {
-      g_connection_pool_enabled = Boolean.parseBoolean(poolEnabled);
-    }
-    if (poolMaxCountPerEntry != null && poolMaxCountPerEntry.trim().length() != 0 ) {
-      g_connection_pool_max_count_per_entry = Integer.parseInt(poolMaxCountPerEntry);
-    }
-    if (poolMaxIdleTime != null && poolMaxIdleTime.trim().length() != 0) {
-      g_connection_pool_max_idle_time = Integer.parseInt(poolMaxIdleTime) * 1000;
-    }
-    if (poolMaxWaitTimeInMS != null && poolMaxWaitTimeInMS.trim().length() != 0) {
-      g_connection_pool_max_wait_time_in_ms = Integer.parseInt(poolMaxWaitTimeInMS);
     }
   }
 
@@ -261,7 +217,6 @@ public class ClientGlobal {
    */
   public static Socket getSocket(InetSocketAddress addr) throws IOException {
     Socket sock = new Socket();
-    sock.setReuseAddress(true);
     sock.setSoTimeout(ClientGlobal.g_network_timeout);
     sock.connect(addr, ClientGlobal.g_connect_timeout);
     return sock;
@@ -327,10 +282,6 @@ public class ClientGlobal {
     ClientGlobal.g_tracker_group = tracker_group;
   }
 
-  public static boolean isG_connection_pool_enabled() {
-    return g_connection_pool_enabled;
-  }
-
   public static String configInfo() {
     String trackerServers = "";
     if (g_tracker_group != null) {
@@ -347,10 +298,6 @@ public class ClientGlobal {
       + "\n  g_anti_steal_token = " + g_anti_steal_token
       + "\n  g_secret_key = " + g_secret_key
       + "\n  g_tracker_http_port = " + g_tracker_http_port
-      + "\n  g_connection_pool_enabled = " + g_connection_pool_enabled
-      + "\n  g_connection_pool_max_count_per_entry = " + g_connection_pool_max_count_per_entry
-      + "\n  g_connection_pool_max_idle_time(ms) = " + g_connection_pool_max_idle_time
-      + "\n  g_connection_pool_max_wait_time_in_ms(ms) = " + g_connection_pool_max_wait_time_in_ms
       + "\n  trackerServers = " + trackerServers
       + "\n}";
   }
