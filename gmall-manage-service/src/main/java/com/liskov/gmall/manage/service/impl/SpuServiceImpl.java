@@ -76,4 +76,42 @@ public class SpuServiceImpl implements SpuService {
             }
         }
     }
+
+    /**
+     * 获取销售属性列表
+     * @param spuId
+     * @return
+     */
+    @Override
+    public List<SpuSaleAttr> getSaleAttrListBySpuId(String spuId) {
+        SpuSaleAttr spuSaleAttr = new SpuSaleAttr();
+        spuSaleAttr.setSpuId(spuId);
+        List<SpuSaleAttr> spuSaleAttrs = spuSaleAttrMapper.select(spuSaleAttr);
+
+        for (SpuSaleAttr saleAttr : spuSaleAttrs) {
+            String saleAttrId = saleAttr.getSaleAttrId();
+
+            SpuSaleAttrValue spuSaleAttrValue = new SpuSaleAttrValue();
+            spuSaleAttrValue.setSaleAttrId(saleAttrId);
+            spuSaleAttrValue.setSpuId(spuId);
+            List<SpuSaleAttrValue> spuSaleAttrValues = spuSaleAttrValueMapper.select(spuSaleAttrValue);
+
+            saleAttr.setSpuSaleAttrValueList(spuSaleAttrValues);
+        }
+
+        return spuSaleAttrs;
+    }
+
+    /**
+     * 获取商品图片信息
+     * @param spuId
+     * @return
+     */
+    @Override
+    public List<SpuImage> getSpuImageListBySpuId(String spuId) {
+
+        SpuImage spuImage = new SpuImage();
+        spuImage.setSpuId(spuId);
+        return spuImageMapper.select(spuImage);
+    }
 }

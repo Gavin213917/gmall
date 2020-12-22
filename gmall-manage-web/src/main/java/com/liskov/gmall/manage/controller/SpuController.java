@@ -2,7 +2,9 @@ package com.liskov.gmall.manage.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.liskov.gmall.bean.BaseSaleAttr;
+import com.liskov.gmall.bean.SpuImage;
 import com.liskov.gmall.bean.SpuInfo;
+import com.liskov.gmall.bean.SpuSaleAttr;
 import com.liskov.gmall.manage.util.MyUploadUtil;
 import com.liskov.gmall.service.SpuService;
 import org.springframework.stereotype.Controller;
@@ -72,6 +74,33 @@ public class SpuController {
         return imgUrl;
     }
 
+    /**
+     * 获取销售属性列表
+     * @param spuId
+     * @return
+     */
+    @RequestMapping("getSaleAttrListBySpuId")
+    @ResponseBody
+    public List<SpuSaleAttr> getSaleAttrListBySpuId(String spuId){
+
+        List<SpuSaleAttr> spuSaleAttrs = spuService.getSaleAttrListBySpuId(spuId);
+
+        return spuSaleAttrs;
+    }
+
+    /**
+     * 获取商品图片信息
+     * @param spuId
+     * @return
+     */
+    @RequestMapping("getSpuImageListBySpuId")
+    @ResponseBody
+    public List<SpuImage> getSpuImageListBySpuId(String spuId){
+
+        List<SpuImage> spuImages = spuService.getSpuImageListBySpuId(spuId);
+
+        return spuImages;
+    }
 
 
 }

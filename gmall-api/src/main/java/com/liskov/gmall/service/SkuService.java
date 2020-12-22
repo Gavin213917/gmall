@@ -12,4 +12,11 @@ public interface SkuService {
      * @return
      */
     List<SkuInfo> getSkuListBySpu(String spuId);
+
+    /**
+     * 保存商品单元信息
+     * @param skuInfo
+     * @return
+     */
+    void saveSku(SkuInfo skuInfo);
 }

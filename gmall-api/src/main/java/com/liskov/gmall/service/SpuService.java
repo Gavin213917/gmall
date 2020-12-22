@@ -1,7 +1,9 @@
 package com.liskov.gmall.service;
 
 import com.liskov.gmall.bean.BaseSaleAttr;
+import com.liskov.gmall.bean.SpuImage;
 import com.liskov.gmall.bean.SpuInfo;
+import com.liskov.gmall.bean.SpuSaleAttr;
 
 import java.util.List;
 
@@ -26,4 +28,18 @@ public interface SpuService {
      * @return
      */
     void saveSpu(SpuInfo spuInfo);
+
+    /**
+     * 获取销售属性列表
+     * @param spuId
+     * @return
+     */
+    List<SpuSaleAttr> getSaleAttrListBySpuId(String spuId);
+
+    /**
+     * 获取商品图片信息
+     * @param spuId
+     * @return
+     */
+    List<SpuImage> getSpuImageListBySpuId(String spuId);
 }
