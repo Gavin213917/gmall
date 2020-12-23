@@ -7,6 +7,7 @@ import com.liskov.gmall.service.SpuService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.Map;
 
 
 @Service
@@ -113,5 +114,25 @@ public class SpuServiceImpl implements SpuService {
         SpuImage spuImage = new SpuImage();
         spuImage.setSpuId(spuId);
         return spuImageMapper.select(spuImage);
+    }
+
+    /**
+     * 获取商品的销售属性信息
+     * @param stringStringHashMap
+     * @return
+     */
+    @Override
+    public List<SpuSaleAttr> getSpuSaleAttrListCheckBySku(Map<String, String> stringStringHashMap) {
+        return spuSaleAttrValueMapper.selectSpuSaleAttrListCheckBySku(stringStringHashMap);
+    }
+
+    /**
+     * spu的sku和销售属性对应关系的hash表
+     * @param spuId
+     * @return
+     */
+    @Override
+    public List<SkuInfo> getSkuSaleAttrValueListBySpuId(String spuId) {
+        return spuSaleAttrValueMapper.selectSkuSaleAttrValueListBySpu(spuId);
     }
 }

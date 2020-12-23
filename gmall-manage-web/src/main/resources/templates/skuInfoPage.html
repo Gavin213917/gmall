@@ -76,7 +76,7 @@
 
     // 初始化平台属性
     function  initAttrInfoGroup(catalog3Id) {
-        $.post("getAttrListByCtg3Id",{catalog3Id:catalog3Id},function(data){
+        $.post("getAttrListByCtg3Id",{catalog3Id:catalog3Id},function(data){ //返回BaseAttrInfo
 
             var append = "";
             $(data).each(function(i,attr){
@@ -103,7 +103,7 @@
     //初始化销售属性
     function initSpuSaleAttrGroup(spuId) {
         // alert("初始化销售属性");
-        $.post("getSaleAttrListBySpuId",{spuId:spuId},function(data){
+        $.post("getSaleAttrListBySpuId",{spuId:spuId},function(data){ //返回 SpuSaleAttr 信息
 
             var append = "";
             $(data).each(function(i,saleAttr){
@@ -173,13 +173,10 @@
             skuInfo["skuAttrValueList["+i+"].valueId"] = valueId;
         });
 
-        $.post("saveSku",skuInfo,function(data){
-            alert(data);
-        });
-
         // 获取销售属性列表
         var spans = $("#spuSaleAttrGroup").children("span");
         $(spans).each(function(i,span){
+            //$(span).attr("saleAttrId"); 返回span 中 属性saleAttrId 的值
             var saleAttrId = $(span).attr("saleAttrId");
             var saleAttrValueId = $(span).children("select").val();
             var  saleAttrName = $(span).attr("saleAttrName");
@@ -187,6 +184,7 @@
 
             skuInfo["skuSaleAttrValueList["+i+"].saleAttrId"] = saleAttrId;
             skuInfo["skuSaleAttrValueList["+i+"].saleAttrValueId"] = saleAttrValueId;
+
             skuInfo["skuSaleAttrValueList["+i+"].saleAttrName"] = saleAttrName;
             skuInfo["skuSaleAttrValueList["+i+"].saleAttrValueName"] = saleAttrValueName;
         });
@@ -194,6 +192,7 @@
         // 封装默认图片
         var skuDefaultImg = $("input[name='isD']:checked").val();
         if(!skuDefaultImg){
+            //如果默认的图片没有选择，给一个默认的图片，或者弹出提醒
             skuDefaultImg = $("#skuImgDg").datagrid("getRows").eq(0).imgUrl;
         }
         skuInfo.skuDefaultImg = skuDefaultImg;

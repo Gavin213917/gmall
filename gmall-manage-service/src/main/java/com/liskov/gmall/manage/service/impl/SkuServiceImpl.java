@@ -1,10 +1,7 @@
 package com.liskov.gmall.manage.service.impl;
 
 import com.alibaba.dubbo.config.annotation.Service;
-import com.liskov.gmall.bean.SkuAttrValue;
-import com.liskov.gmall.bean.SkuImage;
-import com.liskov.gmall.bean.SkuInfo;
-import com.liskov.gmall.bean.SkuSaleAttrValue;
+import com.liskov.gmall.bean.*;
 import com.liskov.gmall.manage.mapper.SkuAttrValueMapper;
 import com.liskov.gmall.manage.mapper.SkuImageMapper;
 import com.liskov.gmall.manage.mapper.SkuInfoMapper;
@@ -46,30 +43,50 @@ public class SkuServiceImpl implements SkuService {
      */
     @Override
     public void saveSku(SkuInfo skuInfo) {
+        //保存 库存单元表
         skuInfoMapper.insertSelective(skuInfo);
-
         String skuId = skuInfo.getId();
 
+        //保存 平台属性值关联表
+        //前台的valueId 不能为空，否则会报错，Incorrect integer value: ” for column ‘id’ at row 1
+        //原因：因为用了高版本的mysql导致的，发现高版本的mysql如果是空值应该要写NULL或者0
         List<SkuAttrValue> skuAttrValueList = skuInfo.getSkuAttrValueList();
-
         for (SkuAttrValue skuAttrValue : skuAttrValueList) {
             skuAttrValue.setSkuId(skuId);
             skuAttrValueMapper.insert(skuAttrValue);
         }
 
+        //销售属性值表
         List<SkuSaleAttrValue> skuSaleAttrValueList = skuInfo.getSkuSaleAttrValueList();
-
         for (SkuSaleAttrValue skuSaleAttrValue : skuSaleAttrValueList) {
             skuSaleAttrValue.setSkuId(skuId);
             skuSaleAttrValueMapper.insert(skuSaleAttrValue);
         }
 
-
+        //库存单元图片表
         List<SkuImage> skuImageList = skuInfo.getSkuImageList();
         for (SkuImage skuImage : skuImageList) {
             skuImage.setSkuId(skuId);
             skuImageMapper.insert(skuImage);
         }
 
+    }
+
+    /**
+     * 查询库存商品信息
+     * @param skuId
+     * @return
+     */
+    @Override
+    public SkuInfo getSkuById(String skuId) {
+        SkuInfo skuInfo = new SkuInfo();
+        skuInfo.setId(skuId);
+        SkuInfo skuInfo1 = skuInfoMapper.selectOne(skuInfo);
+        //图片信息
+        SkuImage skuImage = new SkuImage();
+        skuImage.setSkuId(skuId);
+        List<SkuImage> skuImageList = skuImageMapper.select(skuImage);
+        skuInfo1.setSkuImageList(skuImageList);
+        return skuInfo1;
     }
 }

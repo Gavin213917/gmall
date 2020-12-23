@@ -1,11 +1,9 @@
 package com.liskov.gmall.service;
 
-import com.liskov.gmall.bean.BaseSaleAttr;
-import com.liskov.gmall.bean.SpuImage;
-import com.liskov.gmall.bean.SpuInfo;
-import com.liskov.gmall.bean.SpuSaleAttr;
+import com.liskov.gmall.bean.*;
 
 import java.util.List;
+import java.util.Map;
 
 public interface SpuService {
 
@@ -42,4 +40,18 @@ public interface SpuService {
      * @return
      */
     List<SpuImage> getSpuImageListBySpuId(String spuId);
+
+    /**
+     * 获取商品的销售属性信息
+     * @param stringStringHashMap
+     * @return
+     */
+    List<SpuSaleAttr> getSpuSaleAttrListCheckBySku(Map<String, String> stringStringHashMap);
+
+    /**
+     * spu的sku和销售属性对应关系的hash表
+     * @param spuId
+     * @return
+     */
+    List<SkuInfo> getSkuSaleAttrValueListBySpuId(String spuId);
 }

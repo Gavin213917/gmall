@@ -19,4 +19,11 @@ public interface SkuService {
      * @return
      */
     void saveSku(SkuInfo skuInfo);
+
+    /**
+     * 查询库存商品信息-item 调用 manage 的服务
+     * @param skuId
+     * @return
+     */
+    SkuInfo getSkuById(String skuId);
 }
