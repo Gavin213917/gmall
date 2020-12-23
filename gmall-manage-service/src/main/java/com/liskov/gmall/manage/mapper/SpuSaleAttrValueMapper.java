@@ -3,6 +3,7 @@ package com.liskov.gmall.manage.mapper;
 import com.liskov.gmall.bean.SkuInfo;
 import com.liskov.gmall.bean.SpuSaleAttr;
 import com.liskov.gmall.bean.SpuSaleAttrValue;
+import org.apache.ibatis.annotations.Param;
 import tk.mybatis.mapper.common.Mapper;
 
 import java.util.List;
@@ -22,5 +23,5 @@ public interface SpuSaleAttrValueMapper extends Mapper<SpuSaleAttrValue> {
      * @param spuId
      * @return
      */
-    List<SkuInfo> selectSkuSaleAttrValueListBySpu(String spuId);
+    List<SkuInfo> selectSkuSaleAttrValueListBySpu(@Param("spuId") String spuId);
 }

@@ -1,13 +1,16 @@
 package com.liskov.gmall.manage.service.impl;
 
 import com.alibaba.dubbo.config.annotation.Service;
+import com.alibaba.fastjson.JSON;
 import com.liskov.gmall.bean.*;
 import com.liskov.gmall.manage.mapper.SkuAttrValueMapper;
 import com.liskov.gmall.manage.mapper.SkuImageMapper;
 import com.liskov.gmall.manage.mapper.SkuInfoMapper;
 import com.liskov.gmall.manage.mapper.SkuSaleAttrValueMapper;
 import com.liskov.gmall.service.SkuService;
+import com.liskov.gmall.util.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import redis.clients.jedis.Jedis;
 
 import java.util.List;
 
@@ -22,6 +25,9 @@ public class SkuServiceImpl implements SkuService {
     SkuSaleAttrValueMapper skuSaleAttrValueMapper;
     @Autowired
     SkuImageMapper skuImageMapper;
+    @Autowired 
+    RedisUtil redisUtil;
+
 
     /**
      * 查询商品单元列表信息
@@ -79,6 +85,28 @@ public class SkuServiceImpl implements SkuService {
      */
     @Override
     public SkuInfo getSkuById(String skuId) {
+
+        Jedis jedis = redisUtil.getJedis();
+        SkuInfo skuInfo = null;
+
+        // 查询redis缓存
+        String key = "sku:" + skuId + ":info";
+        String val = jedis.get(key);
+        skuInfo = JSON.parseObject(val, SkuInfo.class);
+
+        if (skuInfo == null) {
+            // 查询db
+            skuInfo = getSkuByIdFromDb(skuId);
+
+            // 同步缓存
+            jedis.set(key, JSON.toJSONString(skuInfo));
+        }
+
+
+        return skuInfo;
+    }
+
+    private SkuInfo getSkuByIdFromDb(String skuId) {
         SkuInfo skuInfo = new SkuInfo();
         skuInfo.setId(skuId);
         SkuInfo skuInfo1 = skuInfoMapper.selectOne(skuInfo);
@@ -87,6 +115,11 @@ public class SkuServiceImpl implements SkuService {
         skuImage.setSkuId(skuId);
         List<SkuImage> skuImageList = skuImageMapper.select(skuImage);
         skuInfo1.setSkuImageList(skuImageList);
+
+        SkuSaleAttrValue skuSaleAttrValue = new SkuSaleAttrValue();
+        skuSaleAttrValue.setSkuId(skuId);
+        List<SkuSaleAttrValue> skuSaleAttrValues = skuSaleAttrValueMapper.select(skuSaleAttrValue);
+        skuInfo1.setSkuSaleAttrValueList(skuSaleAttrValues);
         return skuInfo1;
     }
 }
