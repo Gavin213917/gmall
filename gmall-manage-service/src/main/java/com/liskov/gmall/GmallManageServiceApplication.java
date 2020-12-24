@@ -1,4 +1,4 @@
-package com.liskov.gmall.manage;
+package com.liskov.gmall;
 
 import com.alibaba.dubbo.config.spring.context.annotation.EnableDubbo;
 import org.springframework.boot.SpringApplication;
