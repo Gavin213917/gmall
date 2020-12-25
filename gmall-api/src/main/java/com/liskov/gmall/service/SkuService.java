@@ -26,4 +26,11 @@ public interface SkuService {
      * @return
      */
     SkuInfo getSkuById(String skuId);
+
+    /**
+     * 测试方法查询mysql中的sku信息
+     * @param catalog3Id
+     * @return
+     */
+    List<SkuInfo> getSkuListByCatalog3Id(String catalog3Id);
 }

@@ -1,0 +1,113 @@
+---------------------------------------------------nginx 命令----------------------------------------
+nginx -s reload  ：修改配置后重新加载生效
+
+nginx -s reopen  ：重新打开日志文件
+nginx -t -c /path/to/nginx.conf 测试nginx配置文件是否正确
+
+关闭nginx：
+nginx -s stop  :快速停止nginx
+         quit  ：完整有序的停止nginx
+
+其他的停止nginx 方式：
+
+ps -ef | grep nginx
+
+kill -QUIT 主进程号     ：从容停止Nginx
+kill -TERM 主进程号     ：快速停止Nginx
+pkill -9 nginx          ：强制停止Nginx
+
+启动nginx:
+nginx -c /path/to/nginx.conf
+
+平滑重启nginx：
+kill -HUP 主进程号
+------------------------------------------------------------------------
+
+
+====================================================================项目命令=======================================================
+windows hosts 文件配置：方便调用
+127.0.0.1  localhost order.gmall.com payment.gmall.com item.gmall.com list.gmall.com www.gmall.com cart.gmall.com passport.gmall.com gware.gmall.com manage.gmall.com
+
+1、启动：dubbo-admin  bin/startup.sh
+
+    zookeeper: bin/zkServer.sh startup
+
+2、启动fdfs_trackerd：service fdfs_trackerd start
+
+    查看启动状态：ps -ef |grep tracker
+
+3、启动fdfs_storaged：service fdfs_storaged start
+
+    查看启动状态：ps -ef |grep fdfs
+
+4、启动：nginx ：/usr/local/nginx/sbin/nginx
+
+        nginx -c /usr/local/nginx/conf/nginx.conf
+
+    查看状态：ps -ef |grep nginx
+
+5、启动redis：redis-cli -h 192.168.2.128 -p 6379（远程连接）
+
+    ip链接测试办法 -h代表id地址 -p代表端口号 -a代表密码
+    ./redis-cli -h 192.168.21.132 -p 6379 -a 52xbc
+
+    目录：/usr/local/redis/bin:  ./redis-server redis.conf（本地）
+    关闭：./redis-cli shutdown
+
+    查看状态：ps -ef |grep redis /ps aux|grep redis
+
+=====给redis 加上分布式锁
+    set sku:10:lock 1 px 30000 nx --30s 失效
+
+6、启动elasticsearch：
+    cd /etc/init.d
+    service elasticsearch start
+    service elasticsearch restart
+    service elasticsearch stop
+
+7、启动 kibana,在bin 目录下执行
+    /opt/kibana-5.6.4-linux-x86_64/bin: nohup  ./kibana  &
+    用浏览器打开 http://192.168.2.128:5601/
+    中文分词器 ：/usr/share/elasticsearch/plugins/ik
+
+    find / -name *jvm*  搜索全部和jvm有关的配置文件
+    修改 vim /etc/elasticsearch/jvm.options --elasticsearch 默认启动时占用的内存大小(默认是2g)，此处我设置为128m
+
+=========================================================================上传图片测试fdfs=====================================================================
+
+命令: /usr/bin/fdfs_test  /etc/fdfs/client.conf upload /root/10.jpg
+图片保存的路径：/opt/fastdfs/fdfs_storage/data/00/00 (有上限，满了自动换文件夹)
+
+=======输出结果
+
+This is FastDFS client test program v5.05
+
+Copyright (C) 2008, Happy Fish / YuQing
+
+FastDFS may be copied only under the terms of the GNU General
+Public License V3, which may be found in the FastDFS source kit.
+Please visit the FastDFS Home Page http://www.csource.org/
+for more detail.
+
+[2020-12-21 18:11:02] DEBUG - base_path=/opt/fastdfs, connect_timeout=30, network_timeout=60, tracker_server_count=1, anti_steal_token=0, anti_steal_secret_key length=0, use_connection_pool=0, g_connection_pool_max_idle_time=3600s, use_storage_id=0, storage server id count: 0
+
+tracker_query_storage_store_list_without_group:
+	server 1. group_name=, ip_addr=192.168.2.128, port=23000
+
+group_name=group1, ip_addr=192.168.2.128, port=23000
+storage_upload_by_filename
+group_name=group1, remote_filename=M00/00/00/wKgCgF_gdLaAQG37AAAvmPAHhKM082.jpg
+source ip address: 192.168.2.128
+file timestamp=2020-12-21 18:11:02
+file size=12184
+file crc32=4027024547
+example file url: http://192.168.2.128/group1/M00/00/00/wKgCgF_gdLaAQG37AAAvmPAHhKM082.jpg
+storage_upload_slave_by_filename
+group_name=group1, remote_filename=M00/00/00/wKgCgF_gdLaAQG37AAAvmPAHhKM082_big.jpg
+source ip address: 192.168.2.128
+file timestamp=2020-12-21 18:11:02
+file size=12184
+file crc32=4027024547
+example file url: http://192.168.2.128/group1/M00/00/00/wKgCgF_gdLaAQG37AAAvmPAHhKM082_big.jpg
+==============================================================================================================================
+

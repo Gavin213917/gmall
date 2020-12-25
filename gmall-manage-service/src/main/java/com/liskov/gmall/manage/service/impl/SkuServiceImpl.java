@@ -172,4 +172,24 @@ public class SkuServiceImpl implements SkuService {
         }
         return skuInfo1;
     }
+
+    /**
+     * 测试方法查询mysql中的sku信息
+     * @param catalog3Id
+     * @return
+     */
+    @Override
+    public List<SkuInfo> getSkuListByCatalog3Id(String catalog3Id) {
+        SkuInfo skuInfo = new SkuInfo();
+        skuInfo.setCatalog3Id(catalog3Id);
+        List<SkuInfo> skuInfoList = skuInfoMapper.select(skuInfo);
+        for (SkuInfo info : skuInfoList) {
+            String skuId = info.getId();
+            SkuAttrValue attrValue = new SkuAttrValue();
+            attrValue.setSkuId(skuId);
+            List<SkuAttrValue> valueList = skuAttrValueMapper.select(attrValue);
+            info.setSkuAttrValueList(valueList);
+        }
+        return skuInfoList;
+    }
 }
