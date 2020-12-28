@@ -62,18 +62,22 @@ GET gmall/SkuLsInfo/_search
 {
   "query": {
     "bool":{
-      "must": [
+    "filter": [
+           {
+           "term": {
+             "skuAttrValueList.valueId": "51"
+           }},
+          {"term": {
+             "skuAttrValueList.valueId": "48"
+           }}
+          ]
+    "must": [
         {
           "match": {
             "skuName": "华为"
           }
         }
-      ],
-      "filter": { //过滤
-        "term": {
-          "skuAttrValueList.valueId": "1"
-        }
-      }
+      ]
     }
   },
   "size": 1
