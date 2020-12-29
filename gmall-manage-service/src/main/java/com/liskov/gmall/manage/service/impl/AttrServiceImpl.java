@@ -8,9 +8,11 @@ import com.liskov.gmall.manage.mapper.BaseAttrInfoMapper;
 import com.liskov.gmall.manage.mapper.BaseAttrValueMapper;
 import com.liskov.gmall.service.AttrService;
 import com.liskov.gmall.utils.ConstantUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class AttrServiceImpl implements AttrService {
@@ -122,5 +124,17 @@ public class AttrServiceImpl implements AttrService {
             attrInfo.setAttrValueList(select1);
         }
         return select;
+    }
+
+    /**
+     * 查询平台属性列表
+     * @param valueIds
+     * @return
+     */
+    @Override
+    public List<BaseAttrInfo> getAttrListByValueIds(Set<String> valueIds) {
+        String ids = StringUtils.join(valueIds);
+        List<BaseAttrInfo> baseAttrInfos = baseAttrValueMapper.selectAttrListByValueIds(ids);
+        return baseAttrInfos;
     }
 }
